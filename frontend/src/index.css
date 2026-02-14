@@ -1,0 +1,33 @@
+:root {
+  --bg-offwhite: #f8f6f3;
+  --accent-brown: #6b4423;
+  --accent-brown-hover: #5a391c;
+}
+
+body {
+  background-color: var(--bg-offwhite);
+  margin: 0;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.btn-primary {
+  background-color: var(--accent-brown);
+  border-color: var(--accent-brown);
+}
+
+.btn-primary:hover {
+  background-color: var(--accent-brown-hover);
+  border-color: var(--accent-brown-hover);
+}
+
+.card {
+  border: 1px solid #e0dcd6;
+}
+
+a {
+  color: var(--accent-brown);
+}
+
+a:hover {
+  color: var(--accent-brown-hover);
+}
