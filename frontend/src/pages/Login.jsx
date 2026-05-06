@@ -22,9 +22,12 @@ function Login() {
       const token = res.data?.token ?? res.data?.accessToken ?? res.data?.access_token;
       if (token) {
         localStorage.setItem('token', token);
-        navigate('/stores', { replace: true });
-      } else {
-        setError('Invalid response from server');
+
+        if (res.data.role) {
+          localStorage.setItem('role', res.data.role);
+        }
+
+        navigate('/stores');
       }
     } catch (err) {
       setError(err.response?.data?.message || 'Login failed');

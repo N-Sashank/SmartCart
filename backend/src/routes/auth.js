@@ -11,6 +11,7 @@ const router = Router();
 router.post('/register', async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
+    console.log(req.body);
 
     if (!name || !email || !password)
       return res.status(400).json({ error: 'Name, email and password required' });
@@ -51,30 +52,75 @@ router.post('/register', async (req, res) => {
 
 
 
+// router.post('/login', async (req, res) => {
+//   try {
+//     const { email, password } = req.body;
+//         console.log(req.body);
+
+//     if (!email || !password)
+//       return res.status(400).json({ error: 'Email and password required' });
+//       console.log(!email);
+
+//     const user = await prisma.user.findUnique({ where: { email } });
+//     if (!user || !user.passwordHash)
+//       return res.status(401).json({ error: 'Invalid credentials' });
+      
+
+//     const valid = await bcrypt.compare(password, user.passwordHash);
+//     if (!valid)
+//       return res.status(401).json({ error: 'Invalid credentials' });
+    
+
+//     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
+
+//     return res.json({ token });
+//   } catch (err) {
+//     console.error(err);
+//     return res.status(500).json({ error: 'Login failed' });
+//   }
+// });
+
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    if (!email || !password)
+    console.log("Body:", req.body);
+    console.log("Email:", email);
+    console.log("Password:", password);
+
+    if (!email || !password) {
+      console.log("Missing fields");
       return res.status(400).json({ error: 'Email and password required' });
+    }
 
     const user = await prisma.user.findUnique({ where: { email } });
-    if (!user || !user.passwordHash)
+    console.log("User:", user);
+
+    if (!user || !user.passwordHash) {
+      console.log("User not found or no password hash");
       return res.status(401).json({ error: 'Invalid credentials' });
+    }
 
     const valid = await bcrypt.compare(password, user.passwordHash);
-    if (!valid)
+    console.log("Password valid:", valid);
+
+    if (!valid) {
       return res.status(401).json({ error: 'Invalid credentials' });
+    }
 
     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
+    console.log("Token generated");
 
-    return res.json({ token });
+    return res.json({
+      token,
+      role: user.role
+    });
+    
   } catch (err) {
     console.error(err);
     return res.status(500).json({ error: 'Login failed' });
   }
 });
-
 
 router.get('/me', optionalAuth, async (req, res) => {
   if (!req.user) return res.json({ authenticated: false, user: null });

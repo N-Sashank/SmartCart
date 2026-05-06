@@ -12,7 +12,7 @@ function Cart() {
 
   const handleDelete = async (cartItemId) => {
     try {
-      await api.delete(`/cart/delete/${cartItemId}`);
+      await api.delete(`/cart/delete/₹{cartItemId}`);
       mutate();
     } catch (err) {
       // optional: show a toast or inline error
